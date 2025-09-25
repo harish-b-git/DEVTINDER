@@ -13,6 +13,31 @@ const validateSignUpData = (req) => {
   }
 };
 
+function validateEditFields(req){
+const allowedFields =['firstName','lastName','age','skills',"gender","about",'photoUrl']
+
+const isValidInput = Object.keys(req.body).every((field)=>allowedFields.includes(field))
+if(!isValidInput){
+  throw new Error('Check the input fields')
+}else{
+return
+}
+
+}
+
+
+function validatePasswordInputRequest(req){
+  
+    if (!req.body.previousPassword) {
+      throw new Error("Enter old Password");
+    }
+    if (!req.body.newPassword) {
+      throw new Error("Enter new password");
+    }
+    if (!req.body.previousPassword || !req.body.newPassword) {
+      throw new Error("Check the input fields you are sending");
+    }
+}
 module.exports = {
-  validateSignUpData,
+  validateSignUpData,validateEditFields,validatePasswordInputRequest
 };
