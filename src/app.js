@@ -1,18 +1,26 @@
-const express = require('express')
+const express = require("express");
+const connectDB = require("./config/database");
+const app = express();
+const cookieParser = require("cookie-parser");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
 
-const app = express()
+app.use(express.json());
+app.use(cookieParser());
+
+app.use('/',authRouter)
+app.use('/',profileRouter)
+app.use('/',requestRouter)
 
 
-app.post('/abc',(req,res)=>{
-console.log("req",req.query);
-    res.send({firstName:'Harish',lastName:'Batta'})
-})
-
-app.get('/user',(req,res)=>{
-
-    res.send('User Data')
-})
-
-app.listen(2323,()=>{
-    console.log("Server has started");
-})
+connectDB()
+  .then(() => {
+    console.log("Database connection established...");
+    app.listen(2323, () => {
+      console.log("Server is successfully listening on port 2323...");
+    });
+  })
+  .catch((err) => {
+    console.error("Database cannot be connected!!");
+  });
